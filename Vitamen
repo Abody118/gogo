@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجر السعادة الزوجية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Tajawal',sans-serif}
+        body{background:#ffffff;color:#1a1a1a;font-size:14px;line-height:1.6}
+       .container{max-width:1200px;margin:auto;padding:12px}
+        header{background:#ffffff;padding:20px 0;text-align:center;color:#000;border-bottom:1px solid #e5e5e5;position:relative}
+        header h1{font-size:22px;cursor:pointer;user-select:none;font-weight:700}
+        header p{margin-top:4px;font-size:12px;color:#666}
+       .offers{background:#fafafa;border:1px solid #e5e5e5;margin:20px 0;padding:15px;border-radius:8px;text-align:center}
+       .offers h2{color:#000;font-size:18px;margin-bottom:8px;font-weight:700}
+       .offers p{font-size:13px;color:#333}
+       .countdown{background:#000;color:#fff;padding:8px 15px;border-radius:6px;display:inline-block;margin-top:10px;font-weight:500;font-size:13px}
+       .tabs{display:flex;gap:8px;justify-content:center;margin:25px 0;flex-wrap:wrap;border-bottom:1px solid #e5e5e5;padding-bottom:15px}
+       .tab-btn{background:#fff;border:1px solid #000;color:#000;padding:8px 18px;border-radius:4px;cursor:pointer;font-size:13px;font-weight:500;transition:.2s}
+       .tab-btn.active,.tab-btn:hover{background:#000;color:#fff}
+       .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin:25px 0}
+       .product{background:#fff;border:1px solid #e5e5e5;border-radius:8px;padding:15px;transition:.2s;position:relative}
+       .product:hover{border-color:#000;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+       .product-img{width:100%;height:200px;border-radius:6px;background:#fafafa;display:flex;align-items:center;justify-content:center;color:#999;font-size:13px;border:1px dashed #ddd;overflow:hidden}
+       .product-img img{width:100%;height:100%;object-fit:contain}
+       .badge{position:absolute;top:12px;right:12px;background:#000;color:#fff;padding:3px 8px;border-radius:3px;font-size:11px;font-weight:500}
+       .product h3{margin:12px 0 6px;color:#000;font-size:15px;font-weight:700;min-height:40px}
+       .desc{font-size:12px;color:#666;margin:6px 0;min-height:50px;line-height:1.5}
+       .price{font-size:18px;font-weight:700;color:#000;margin:8px 0}
+       .old-price{text-decoration:line-through;color:#999;font-size:14px;margin-right:8px;font-weight:400}
+       .btn{background:#000;color:#fff;border:none;padding:10px;border-radius:4px;cursor:pointer;font-size:13px;width:100%;margin:5px 0;font-weight:500;transition:.2s}
+       .btn:hover{background:#333}
+       .btn-whatsapp{background:#25D366;border:1px solid #25D366}
+       .btn-edit{background:#fff;color:#000;border:1px solid #000;font-size:12px;padding:6px}
+       .btn-delete{background:#000;border:1px solid #000;color:#fff;font-size:12px;padding:6px}
+       .btn-delete:hover{background:#333;border-color:#333}
+       .btn-small{width:auto;padding:6px 12px;font-size:12px;margin:3px}
+       .reviews{background:#fafafa;padding:10px;border-radius:6px;margin-top:12px;font-size:12px;border:1px solid #f0f0f0}
+       .review{border-bottom:1px solid #e5e5e5;padding:8px 0;position:relative}
+       .review:last-child{border:none}
+       .review strong{color:#000;font-weight:700}
+       .stars{color:#FFD700;font-size:14px}
+       .add-review-btn{background:#000;color:#fff;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;font-size:11px;margin-top:8px}
+        #orderPage,#adminPanel,#editModal,#reviewModal,#trackModal,#successPage{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;overflow-y:auto}
+       .modal-content{background:#fff;max-width:600px;margin:30px auto;padding:25px;border-radius:8px;position:relative}
+       .order-form{max-width:500px;margin:25px auto;background:#fff;padding:25px;border:1px solid #e5e5e5;border-radius:8px}
+       .order-form h2{font-size:18px;margin-bottom:15px;font-weight:700}
+       .order-form input,.order-form select,.order-form textarea{width:100%;padding:10px;margin:7px 0;border:1px solid #ddd;border-radius:4px;font-size:13px}
+       .order-form label{font-weight:700;color:#000;margin-top:10px;display:block;font-size:13px}
+       .close-btn{position:absolute;top:15px;left:20px;font-size:30px;cursor:pointer;color:#999}
+       .total-box{background:#fafafa;padding:15px;border-radius:6px;margin:15px 0;font-size:14px;border:1px solid #e5e5e5}
+       .shipping-option{border:1px solid #ddd;padding:12px;border-radius:6px;margin:8px 0;cursor:pointer;transition:.2s}
+       .shipping-option:hover{border-color:#000;background:#fafafa}
+       .shipping-option input{width:auto;margin-left:8px}
+       .shipping-option.selected{border-color:#000;background:#fafafa}
+       .shipping-title{font-weight:700;color:#000;font-size:13px}
+       .shipping-desc{font-size:12px;color:#666;margin-top:4px}
+       .admin-panel{padding:20px}
+       .admin-panel h2{color:#000;margin:15px 0;font-size:20px;font-weight:700}
+       .admin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px;margin:20px 0}
+       .admin-card{border:1px solid #ddd;padding:15px;border-radius:6px;background:#fafafa}
+       .admin-card input,.admin-card textarea,.admin-card select{width:100%;padding:8px;margin:5px 0;border:1px solid #ddd;border-radius:4px;font-size:12px}
+       .img-preview{width:100%;height:150px;object-fit:contain;background:#fff;border:1px solid #ddd;border-radius:4px;margin:5px 0}
+       .file-input{display:none}
+       .file-label{background:#000;color:#fff;padding:8px 15px;border-radius:4px;cursor:pointer;font-size:12px;display:inline-block;margin:5px 0}
+       .star-rating{display:flex;gap:5px;margin:8px 0}
+       .star-rating i{cursor:pointer;font-size:18px;color:#ddd}
+       .star-rating i.active{color:#FFD700}
+       .whatsapp-float{position:fixed;bottom:20px;left:20px;background:#25D366;color:#fff;width:55px;height:55px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 3px 10px rgba(0,0,0,.2);z-index:999}
+       .top-banner{background:#000;color:#fff;text-align:center;padding:10px;font-size:13px;font-weight:700}
+       .discount-box{background:#fafafa;border:2px dashed #000;padding:12px;border-radius:6px;margin:12px 0;display:none}
+       .discount-input{display:flex;gap:8px;margin-top:8px}
+       .discount-input input{flex:1}
+       .gift-alert{background:#e8f5e9;border:1px solid #4caf50;padding:12px;border-radius:6px;margin:12px 0;display:none;font-size:13px}
+       .why-us{background:#fafafa;border:1px solid #e5e5e5;padding:25px;border-radius:8px;margin:25px 0}
+       .why-us h2{text-align:center;font-size:18px;margin-bottom:20px;font-weight:700}
+       .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+       .feature{text-align:center;padding:15px}
+       .feature i{font-size:35px;margin-bottom:10px;display:block}
+       .purchase-popup{position:fixed;bottom:80px;right:20px;background:#fff;padding:12px 18px;border-radius:6px;box-shadow:0 3px 15px rgba(0,0,0,.2);border:1px solid #e5e5e5;display:none;z-index:999;animation:slideIn 0.5s;font-size:13px}
+        @keyframes slideIn{from{transform:translateX(400px)}to{transform:translateX(0)}}
+       .newsletter{background:#000;color:#fff;padding:30px 15px;text-align:center;margin:30px 0;border-radius:8px}
+       .newsletter h2{font-size:18px;margin-bottom:10px}
+       .newsletter input{max-width:350px;margin:10px auto;display:block}
+       .payment-details{background:#fafafa;padding:12px;border-radius:6px;margin:8px 0;font-size:12px;display:none;border:1px solid #e5e5e5}
+       .cart-icon{position:absolute;top:20px;left:20px;cursor:pointer;font-size:22px}
+       .cart-count{position:absolute;top:-8px;right:-8px;background:#c41e3a;color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700;display:none}
+       .qty-box{display:flex;align-items:center;gap:8px;margin:10px 0}
+       .qty-btn{background:#fff;border:1px solid #000;width:30px;height:30px;border-radius:4px;cursor:pointer;font-size:16px;font-weight:700}
+       .qty-btn:hover{background:#000;color:#fff}
+       .qty-num{font-weight:700;font-size:16px;min-width:30px;text-align:center}
+       .cart-sidebar{position:fixed;top:0;left:-400px;width:380px;height:100%;background:#fff;box-shadow:-5px 0 15px rgba(0,0,0,0.2);transition:0.3s;z-index:1000;padding:20px;overflow-y:auto}
+       .cart-sidebar.active{left:0}
+       .cart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:2px solid #eee;padding-bottom:15px}
+       .cart-item{display:flex;gap:12px;margin-bottom:15px;padding-bottom:15px;border-bottom:1px solid #eee}
+       .cart-item img{width:70px;height:70px;object-fit:cover;border-radius:6px;border:1px solid #ddd}
+       .cart-item-info{flex:1}
+       .cart-item-name{font-weight:700;font-size:13px;margin-bottom:5px}
+       .cart-item-price{font-size:14px;color:#000;font-weight:700}
+       .cart-item-qty{display:flex;align-items:center;gap:8px;margin-top:8px}
+       .cart-total{font-size:18px;font-weight:900;margin:20px 0;padding-top:15px;border-top:2px solid #000}
+       .empty-cart{text-align:center;padding:40px 20px;color:#999}
+       .track-btn{background:#000;color:#fff;border:none;padding:8px 15px;border-radius:4px;cursor:pointer;font-size:12px;margin:10px 0}
+       .track-status{display:flex;justify-content:space-between;margin:20px 0;position:relative}
+       .track-step{text-align:center;flex:1;position:relative;z-index:2}
+       .track-step i{width:35px;height:35px;background:#ddd;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 5px;font-size:16px;color:#fff}
+       .track-step.active i{background:#000}
+       .track-step.done i{background:#25D366}
+       .track-step p{font-size:11px;color:#666}
+       .track-step.active p{color:#000;font-weight:700}
+       .track-line{position:absolute;top:17px;left:0;right:0;height:2px;background:#ddd;z-index:1}
+       .order-id-box{background:#f5f5f5;padding:10px;border-radius:6px;margin:10px 0;font-family:monospace;font-size:13px}
+        @media(max-width:768px){.products{grid-template-columns:1fr}header h1{font-size:20px}.tab-btn{font-size:12px;padding:7px 14px}.cart-sidebar{width:100%;left:-100%}}
+    </style>
+</head>
+<body>
+    <div class="top-banner" id="shippingBanner"></div>
+    <div class="top-banner" id="giftBanner" style="background:#333;margin-top:-1px;display:none;"></div>
+
+    <header>
+        <div class="cart-icon" onclick="toggleCart()">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="cart-count" id="cartCount">0</span>
+        </div>
+        <div class="container">
+            <h1 id="logo">متجر السعادة الزوجية</h1>
+            <p>اقوى المنشطات والمقويات الزوجية</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="offers">
+            <h2><i class="fa-solid fa-tag"></i> <span id="offerTitle">عرض اليوم</span></h2>
+            <p id="offerDesc">باكدج "ليلة ملكية" - Royal Chocolate + EMLA Cream</p>
+            <div class="countdown" id="countdown">العرض ينتهي خلال: 00:00</div>
+        </div>
+
+        <div style="text-align:center;margin:15px 0">
+            <button class="track-btn" onclick="openTrackModal()"><i class="fa-solid fa-truck"></i> تتبع طلبك</button>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="filterProducts('all')">كل المنتجات</button>
+            <button class="tab-btn" onclick="filterProducts('men')">قسم الرجالة</button>
+            <button class="tab-btn" onclick="filterProducts('women')">قسم السيدات</button>
+            <button class="tab-btn" onclick="filterProducts('offers')">العروض</button>
+        </div>
+
+        <div class="products" id="productsContainer"></div>
+
+        <div class="why-us" id="whyUsSection">
+            <h2>ليه تشتري من متجر السعادة الزوجية؟</h2>
+            <div class="features" id="whyUsFeatures"></div>
+        </div>
+
+        <div class="newsletter">
+            <h2><i class="fa-solid fa-envelope"></i> خليك اول واحد يعرف العروض</h2>
+            <p style="font-size:13px;margin-bottom:15px">سجل ايميلك ويوصلك كل العروض الحصرية</p>
+            <input type="email" placeholder="اكتب ايميلك هنا" id="emailInput">
+            <button class="btn" style="max-width:200px;margin:10px auto" onclick="subscribeEmail()">اشترك الآن</button>
+        </div>
+
+        <div class="warning-box">
+            <strong><i class="fa-solid fa-circle-info"></i> تنبيه:</strong> المنتجات مكملات غذائية ومنتجات عناية شخصية. استشر طبيبك قبل الاستخدام لو عندك امراض مزمنة.
+        </div>
+    </div>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2><i class="fa-solid fa-cart-shopping"></i> سلة المشتريات</h2>
+            <span class="close-btn" onclick="toggleCart()">&times;</span>
+        </div>
+        <div id="cartItems"></div>
+        <div class="cart-total">الاجمالي: <span id="cartTotal">0</span> جنيه</div>
+        <button class="btn" onclick="checkoutFromCart()" id="checkoutBtn" style="display:none">اتمام الطلب ✅</button>
+    </div>
+
+    <script>
+        const defaultSettings = {
+            discountCode: 'A307200',
+            discountPercent: '10',
+            discountActive: true,
+            freeShipping: '1000',
+            shippingActive: true,
+            giftMin: '1500',
+            giftName: 'علبة فيتامين سي هدية',
+            giftActive: true,
+            walletNumber: '01009900599',
+            instaPay: '01009900599',
+            whatsappNumber: '01556218451',
+            whyUs: `🚚 شحن سريع خلال 48 ساعة لكل المحافظات
+💯 منتجات اصلية 100% مع شهادة ضمان
+🔄 استرجاع سهل خلال 14 يوم بدون اسئلة
+📞 دعم واتساب فوري من 10 صباحاً لـ 10 مساءً`,
+            offerTitle: 'عرض اليوم',
+            offerDesc: 'باكدج "ليلة ملكية" - Royal Chocolate + EMLA Cream',
+            offerHours: 48
+        };
+
+        let settings = JSON.parse(localStorage.getItem('matgarSettings')) || defaultSettings;
+        const ADMIN_PASSWORD = "1234";
+const defaultProducts = [
+    {id:1,name:"TURBO Fitness Gel 50GM",price:180,oldPrice:250,cat:"men",img:"",desc:"جل موضعي بتركيبة اوميجا 3 و6 وزيت كافور.",badge:"الاكثر مبيعاً",reviews:[]},
+    {id:2,name:"SOTARA GEL 50GM",price:190,oldPrice:280,cat:"men",img:"",desc:"جل القوة والتحمل.",badge:"جديد",reviews:[]},
+    {id:3,name:"كريم دهن الحية للرجال",price:220,oldPrice:300,cat:"men",img:"https://i.postimg.cc/Kv216SBw/IMG-20260202-WA0330.jpg",desc:"الكريم الشهير للتكبير والتأخير.",reviews:[]},
+    {id:7,name:"Royal Chocolate رجالي",price:280,oldPrice:380,cat:"men",img:"https://i.postimg.cc/zXdVVdy5/file-00000f3a071f49dc0cf627f73edbe.png",desc:"شوكولاتة عشبية للرجالة 20 قطعة.",badge:"الاكثر طلباً",reviews:[]},
+    {id:11,name:"Connubial New Gold",price:420,oldPrice:550,cat:"women",img:"https://i.postimg.cc/jj112rby/1776816852043-edit-61068104094621.jpg",desc:"نقط الاثارة للسيدات.",badge:"للأنوثة",reviews:[]}
+]
+
+        let products = JSON.parse(localStorage.getItem('products')) || defaultProducts;
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        let currentProduct = {};
+        let currentFilter = 'all';
+        let isAdmin = false;
+        let logoClicks = 0;
+        let selectedShipping = 'normal';
+        let selectedPayment = 'cod';
+        let discountApplied = false;
+        let discountValue = 0;
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                function generateFakeReviews(){
+            const maleNames = [
+                'احمد محمد','محمود علي','عمر حسين','خالد سعيد','طارق جمال','حسين ابراهيم','مصطفى حسن','علي محمود',
+                'ابراهيم سعد','ياسر خالد','حسن عادل','سعيد فؤاد','جمال نصر','اسلام سامح','امير كمال','باسم طارق',
+                'مدحت عزت','سعد منصور','هشام رفعت','ماجد فتحي','عمرو عبدالله','وائل رضا','سامح نبيل','كريم عادل',
+                'تامر مجدي','هاني شوقي','رامي عز','مروان سعيد','زياد احمد','شريف حسن','بلال محمود','معتز علي',
+                'نادر سامي','باهر فتحي','محسن جابر','فادي كمال','ايمن ناصر','عادل شريف','نبيل طه','رشاد فوزي',
+                'حسام عادل','كريم احمد','وائل محمد','سامي محمود','عزت حسن','فوزي علي','مجدي سعيد','رضا جمال'
+            ];
+
+            const reviewsText = [
+                'المنتج ممتاز وأصلي 100% فرق معايا من اول استخدام','التوصيل كان سريع جداً والمندوب محترم جداً',
+                'الاوردر وصلني متغلف كويس ومفيش اي احراج','جربت حاجات كتير قبل كده ده الوحيد اللي جاب نتيجة',
+                'الجودة ممتازة والسعر مناسب جداً مقارنة بالسوق','خدمة العملاء ذوق وبيردوا بسرعة',
+                'المنتج اصلي زي اللي في الصورة بالظبط','المندوب وصل في الميعاد ومعرفش ايه اللي في الاوردر',
+                'انصح بيه اي حد عنده نفس المشكلة بجد','هطلب تاني اكيد والعرض ده تحفة',
+                'المنتج فرق معايا جامد شكراً ليكم','التغليف سري ومحترم جداً',
+                'بستخدمه بقالي اسبوعين والنتيجة ممتازة','افضل متجر اتعاملت معاه بصراحة',
+                'المنتج اصلي ومش مضروب زي اللي بره','السعر مقابل القيمة ممتاز جداً',
+                'المندوب كان ذوق جداً ومحترم','وصلني في يومين بالظبط زي ما قالولي',
+                'المنتج طبيعي ومفيش منه اي اضرار','تجربة ممتازة وهكررها تاني',
+                'شكراً ليكم بجد المنتج غير حياتي','الاوردر وصل سليم 100%',
+                'المندوب محترم ومستعجلش عليا','المنتج اصلي وجربته قبل كده من الصيدلية',
+                'التعامل محترم والمنتج ممتاز','وصلني الاوردر والمندوب كان لطيف جداً',
+                'المنتج فرق معايا من اول يوم','انصح اي حد يجربه مش هيندم',
+                'الجودة عالية جداً والسعر ممتاز','المنتج اصلي 100% ومش كلام',
+                'المندوب محترم ومعرفش محتوى الاوردر','هطلب تاني لنفسي ولصحابي',
+                'المنتج ممتاز وخدمة العملاء محترمين','وصلني في الميعاد بالظبط',
+                'المنتج اصلي وجاب نتيجة من اول مرة','التغليف كان سري ومفيش احراج خالص',
+                'المنتج ممتاز وفرق معايا جداً','المندوب ذوق جداً والاوردر وصل سليم',
+                'المنتج اصلي وانصح بيه','المنتج فرق معايا والخدمة ممتازة',
+                'المندوب وصل بسرعة ومحترم','المنتج اصلي زي ما مكتوب',
+                'المنتج ممتاز والسعر مناسب','التعامل محترم والمنتج اصلي',
+                'الاوردر وصل والمندوب كان ذوق','المنتج جاب نتيجة سريعة وممتازة',
+                'شكراً على المصداقية والمنتج الاصلي','المندوب محترم جداً ومش بيبص في الاوردر',
+                'هكرر الطلب تاني ان شاء الله','المنتج قوي فعلاً ومش كلام اعلانات',
+                'وصلني بسرعة ومتغلف كويس','السعر حلو مقارنة بالنتايج',
+                'جربته ومندمتش بصراحة','المنتج اصلي 100% ومضمون',
+                'خدمة ما بعد البيع محترمة','هشتري تاني من عندكم',
+                'المنتج ظبط معايا من اول اسبوع','التوصيل مجاني والسعر كويس',
+                'المنتج افضل من اللي في الصيدلية','المندوب محترم ومأخرش عليا',
+                'المنتج طبيعي ومفيش اعراض جانبية','النتيجة ظهرت معايا بسرعة',
+                'شكراً على المصداقية','المنتج اصلي وانا جربته قبل كده',
+                'هطلب العرض تاني','التعامل راقي ومحترم',
+                'المنتج يستاهل سعره','وصلني الاوردر سليم ومقفول',
+                'المنتج فرق معايا بصراحة','خدمة العملاء بترد بسرعة',
+                'المنتج اصلي ومش مضروب','هشتري تاني قريب',
+                'المنتج ممتاز ومجرب','التوصيل سريع والمنتج كويس',
+                'المنتج ظبط الدنيا معايا','شكراً ليكم على الامانة',
+                'المنتج اصلي وانصح بيه اي حد','جربت كتير ده احسن حاجة',
+                'المنتج قوي والسعر مناسب','المندوب محترم جداً',
+                'المنتج اصلي 100% ومضمون','هكرر التجربة تاني اكيد'
+            ];
+
+            products.forEach(p => {
+                p.reviews = [];
+            });
+
+            products.forEach(p => {
+                let count = Math.floor(Math.random() * 6) + 15;
+                let usedNames = new Set();
+                let usedTexts = new Set();
+
+                for(let i=0; i<count; i++){
+                    let name;
+                    do {
+                        name = maleNames[Math.floor(Math.random() * maleNames.length)] + ' - ' +
+                               ['القاهرة','الجيزة','الاسكندرية','المنصورة','طنطا','المنيا','اسيوط','سوهاج','الشرقية','الغربية','البحيرة','كفر الشيخ'][Math.floor(Math.random()*12)];
+                    } while(usedNames.has(name));
+                    usedNames.add(name);
+
+                    let text;
+                    do {
+                        text = reviewsText[Math.floor(Math.random() * reviewsText.length)];
+                    } while(usedTexts.has(text));
+                    usedTexts.add(text);
+
+                    p.reviews.push({name: name,text: text,stars: 5});
+                }
+            });
+            saveProducts();
+        }
+
+        function saveProducts(){localStorage.setItem('products', JSON.stringify(products));}
+        function saveSettings(){localStorage.setItem('matgarSettings', JSON.stringify(settings));}
+        function saveCart(){localStorage.setItem('cart', JSON.stringify(cart));}
+        function saveOrders(){localStorage.setItem('orders', JSON.stringify(orders));}
+
+        function loadSettings(){
+            settings = JSON.parse(localStorage.getItem('matgarSettings')) || defaultSettings;
+            updateShippingBanner();
+            updateWhyUs();
+            updatePaymentDetails();
+            updateWhatsApp();
+            updateOfferBox();
+            startCountdown();
+            if(settings.discountActive) document.getElementById('discountBox').style.display = 'block';
+        }
+
+        function updateOfferBox(){
+            document.getElementById('offerTitle').textContent = settings.offerTitle;
+            document.getElementById('offerDesc').textContent = settings.offerDesc;
+        }
+
+        function updateShippingBanner(){
+            if(settings.shippingActive){
+                document.getElementById('shippingBanner').style.display = 'block';
+                document.getElementById('shippingBanner').innerText = `🚚 شحن مجاني للطلبات فوق ${settings.freeShipping} جنيه`;
+            }
+            if(settings.giftActive){
+                document.getElementById('giftBanner').style.display = 'block';
+                document.getElementById('giftBanner').innerText = `🎁 هدية + شحن مجاني للطلبات فوق ${settings.giftMin} جنيه`;
+            }
+        }
+
+        function updateWhyUs(){
+            const features = settings.whyUs.split('\n');
+            document.getElementById('whyUsFeatures').innerHTML = features.map(f => {
+                const icon = f.split(' ')[0];
+                const text = f.split(' ').slice(1).join(' ');
+                return `<div class="feature"><i>${icon}</i><p>${text}</p></div>`;
+            }).join('');
+        }
+
+        function updatePaymentDetails(){
+            document.getElementById('walletDetails').innerHTML = `
+                <strong>حول على رقم المحفظة:</strong><br>
+                ${settings.walletNumber}<br><br>
+                <strong>بعد التحويل ابعت سكرين الشوت على واتساب ${settings.whatsappNumber} لتأكيد الطلب</strong>
+            `;
+            document.getElementById('instaDetails').innerHTML = `
+                <strong>حول على انستا باي:</strong><br>
+                ${settings.instaPay}<br><br>
+                <strong>بعد التحويل ابعت سكرين الشوت على واتساب ${settings.whatsappNumber} لتأكيد الطلب</strong>
+            `;
+        }
+
+        function updateWhatsApp(){
+            document.getElementById('whatsappBtn').href = "https://wa.me/201556218451";
+        }
+                function updateCartUI(){
+            const cartCount = document.getElementById('cartCount');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            let totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            let totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            if(totalQty > 0){
+                cartCount.style.display = 'flex';
+                cartCount.innerText = totalQty;
+                checkoutBtn.style.display = 'block';
+            } else {
+                cartCount.style.display = 'none';
+                checkoutBtn.style.display = 'none';
+            }
+            cartTotal.innerText = totalPrice;
+            if(cart.length === 0){
+                cartItems.innerHTML = '<div class="empty-cart"><i class="fa-solid fa-cart-shopping" style="font-size:50px;margin-bottom:15px"></i><br>السلة فاضية<br>ضيف منتجات عشان تطلب</div>';
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <img src="${item.img || ''}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2770%27 height=%2770%27%3E%3Crect fill=%27%23f0f0f0%27 width=%2770%27 height=%2770%27/%3E%3C/svg%3E'">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">${item.price} جنيه</div>
+                            <div class="cart-item-qty">
+                                <button class="qty-btn" onclick="changeCartQty(${item.id}, -1)">-</button>
+                                <span class="qty-num">${item.qty}</span>
+                                <button class="qty-btn" onclick="changeCartQty(${item.id}, 1)">+</button>
+                                <button class="btn-small btn-delete" onclick="removeFromCart(${item.id})" style="margin-right:10px">حذف</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            saveCart();
+        }
+
+        function toggleCart(){document.getElementById('cartSidebar').classList.toggle('active');}
+
+        function addToCart(id, qty){
+            const product = products.find(p => p.id === id);
+            const existing = cart.find(item => item.id === id);
+            if(existing){existing.qty += qty;}
+            else {cart.push({id: product.id, name: product.name, price: product.price, img: product.img, qty: qty});}
+            updateCartUI();
+        }
+
+        function changeCartQty(id, change){
+            const item = cart.find(i => i.id === id);
+            if(item){
+                item.qty += change;
+                if(item.qty <= 0){removeFromCart(id);}
+                else {updateCartUI();}
+            }
+        }
+
+        function removeFromCart(id){
+            cart = cart.filter(item => item.id!== id);
+            updateCartUI();
+        }
+
+        function checkoutFromCart(){
+            if(cart.length === 0) return;
+            const firstItem = cart[0];
+            currentProduct = products.find(p => p.id === firstItem.id);
+            localStorage.setItem('fullCart', JSON.stringify(cart));
+            toggleCart();
+            openOrder(firstItem.id);
+        }
+
+        function changeQty(id, change){
+            const qtyEl = document.getElementById(`qty-${id}`);
+            let qty = parseInt(qtyEl.innerText);
+            qty += change;
+            if(qty < 1) qty = 1;
+            if(qty > 10) qty = 10;
+            qtyEl.innerText = qty;
+        }
+
+        function addToCartWithQty(id){
+            const qty = parseInt(document.getElementById(`qty-${id}`).innerText);
+            addToCart(id, qty);
+            document.getElementById(`qty-${id}`).innerText = '1';
+        }
+
+        function applyDiscount(){
+            const code = document.getElementById('discountInput').value.trim();
+            if(code === settings.discountCode && settings.discountActive){
+                discountApplied = true;
+                const cartSubtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+                discountValue = Math.round(cartSubtotal * parseInt(settings.discountPercent) / 100);
+                document.getElementById('discountMsg').innerHTML = `✅ تم تطبيق خصم ${settings.discountPercent}% = ${discountValue} جنيه`;
+                document.getElementById('discountMsg').style.color = 'green';
+                document.getElementById('formDiscount').value = code;
+                updateShipping();
+            } else {
+                document.getElementById('discountMsg').innerHTML = '❌ الكود غير صحيح';
+                document.getElementById('discountMsg').style.color = 'red';
+            }
+        }
+
+        function renderProducts(){
+            const container = document.getElementById('productsContainer');
+            const filtered = currentFilter === 'all'? products : products.filter(p => p.cat === currentFilter);
+            container.innerHTML = filtered.map(p => `
+                <div class="product">
+                    ${p.badge? `<div class="badge">${p.badge}</div>` : ''}
+                    <div class="product-img">${p.img? `<img src="${p.img}" alt="${p.name}">` : `صورة ${p.name}`}</div>
+                    <h3>${p.name}</h3>
+                    <div class="desc">${p.desc}</div>
+                    <div class="price">
+                        ${p.oldPrice? `<span class="old-price">${p.oldPrice}ج</span>` : ''}
+                        ${p.price} جنيه
+                    </div>
+                    <div class="qty-box">
+                        <button class="qty-btn" onclick="changeQty(${p.id}, -1)">-</button>
+                        <span class="qty-num" id="qty-${p.id}">1</span>
+                        <button class="qty-btn" onclick="changeQty(${p.id}, 1)">+</button>
+                    </div>
+                    <button class="btn" onclick="addToCartWithQty(${p.id})">🛒 اضف للسلة</button>
+                    <button class="btn btn-whatsapp" onclick="askWhatsApp('${p.name}')">استفسر واتساب</button>
+                    ${isAdmin? `<button class="btn btn-edit" onclick="editProduct(${p.id})"><i class="fa-solid fa-pen"></i> تعديل</button>
+                    <button class="btn btn-delete" onclick="deleteProduct(${p.id})"><i class="fa-solid fa-trash"></i> حذف</button>` : ''}
+                    <div class="reviews">
+                        <strong>آراء العملاء:</strong>
+                        ${p.reviews.length > 0? `
+                            <div class="review">
+                                <div class="stars">${'★'.repeat(p.reviews[0].stars)}${'☆'.repeat(5-p.reviews[0].stars)}</div>
+                                <strong>${p.reviews[0].name}</strong>: ${p.reviews[0].text}
+                            </div>
+                            ${p.reviews.length > 1? `<div style="font-size:12px;color:#666;margin-top:5px;">+${p.reviews.length - 1} تقييم آخر</div>` : ''}
+                        `: '<div style="font-size:12px;color:#999;">لسه مفيش تقييمات</div>'}
+                        <button class="add-review-btn" onclick="openReviewModal(${p.id})">اكتب تقييمك</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterProducts(cat){
+            currentFilter = cat;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderProducts();
+        }
+                function openOrder(id){
+            currentProduct = products.find(p => p.id === id);
+            if(!currentProduct) return;
+            const cartDetails = JSON.parse(localStorage.getItem('fullCart')) || [];
+            let cartText = cartDetails.map(item => `${item.name} × ${item.qty} = ${item.price * item.qty}ج`).join('\n');
+            let cartTotal = cartDetails.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            document.getElementById('formProduct').value = currentProduct.name;
+            document.getElementById('formPrice').value = currentProduct.price;
+            document.getElementById('productPrice').textContent = currentProduct.price;
+            document.getElementById('formCartDetails').value = cartText;
+            selectedShipping = 'normal';
+            selectedPayment = 'cod';
+            discountApplied = false;
+            discountValue = 0;
+            document.getElementById('discountInput').value = '';
+            document.getElementById('discountMsg').innerHTML = '';
+            document.getElementById('normalShip').checked = true;
+            document.getElementById('cod').checked = true;
+            document.querySelectorAll('.shipping-option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelectorAll('.shipping-option')[0].classList.add('selected');
+            document.querySelectorAll('.shipping-option')[3].classList.add('selected');
+            document.getElementById('gov').value = '';
+            updateShipping();
+            document.getElementById('orderPage').style.display = 'block';
+        }
+
+        function closeOrder(){document.getElementById('orderPage').style.display = 'none';}
+
+        function selectShipping(type){
+            selectedShipping = type;
+            document.getElementById(type === 'normal'? 'normalShip' : 'expressShip').checked = true;
+            const shippingOpts = document.querySelectorAll('.shipping-option');
+            shippingOpts[3].classList.remove('selected');
+            shippingOpts[4].classList.remove('selected');
+            event.currentTarget.classList.add('selected');
+            updateShipping();
+        }
+
+        function selectPayment(type){
+            selectedPayment = type;
+            document.getElementById(type).checked = true;
+            const paymentOpts = document.querySelectorAll('.shipping-option');
+            paymentOpts[0].classList.remove('selected');
+            paymentOpts[1].classList.remove('selected');
+            paymentOpts[2].classList.remove('selected');
+            event.currentTarget.classList.add('selected');
+            document.querySelectorAll('.payment-details').forEach(el => el.style.display = 'none');
+            if(type === 'wallet') document.getElementById('walletDetails').style.display = 'block';
+            if(type === 'instapay') document.getElementById('instaDetails').style.display = 'block';
+            document.getElementById('formPayment').value = type === 'cod'? 'الدفع عند الاستلام' : type === 'wallet'? 'محفظة الكترونية' : 'انستا باي';
+        }
+
+        function updateShipping(){
+            const gov = document.getElementById('gov').value;
+            let shipping = 0;
+            let shippingText = '';
+            if(selectedShipping === 'express'){
+                if(gov === 'القاهرة' || gov === 'الجيزة'){
+                    shipping = 100;
+                    shippingText = 'شحن سريع - خلال ساعتين';
+                }else if(gov){
+                    shipping = 250;
+                    shippingText = 'شحن سريع - خلال 24 ساعة';
+                }
+            }else{
+                if(gov === 'الجيزة'){shipping = 65;}
+                else if(gov === 'القاهرة'){shipping = 70;}
+                else if(gov){shipping = 85;}
+                shippingText = 'شحن عادي';
+            }
+
+            let subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            if(discountApplied) subtotal -= discountValue;
+
+            if(settings.shippingActive && subtotal >= parseInt(settings.freeShipping)){
+                shipping = 0;
+                shippingText += ' - مجاني';
+            }
+
+            if(settings.giftActive && subtotal >= parseInt(settings.giftMin)){
+                document.getElementById('giftAlert').style.display = 'block';
+                document.getElementById('giftAlert').innerHTML = `🎁 مبروك! ليك هدية مجانية`;
+                document.getElementById('giftSelectBox').style.display = 'block';
+            } else {
+                document.getElementById('giftAlert').style.display = 'none';
+                document.getElementById('giftSelectBox').style.display = 'none';
+                document.getElementById('giftSelect').value = '';
+            }
+
+            const total = subtotal + shipping;
+            document.getElementById('shippingPrice').textContent = shipping;
+            document.getElementById('totalPrice').textContent = Math.max(0, total);
+            document.getElementById('formShippingType').value = shippingText;
+            document.getElementById('formShipping').value = shipping;
+            document.getElementById('formTotal').value = Math.max(0, total);
+
+            if(discountApplied){
+                document.getElementById('discountRow').style.display = 'block';
+                document.getElementById('discountAmount').textContent = discountValue;
+            } else {
+                document.getElementById('discountRow').style.display = 'none';
+            }
+        }
+
+        function askWhatsApp(productName){
+            window.open(`https://wa.me/201556218451?text=عايز استفسر عن منتج: ${productName}`, '_blank');
+        }
+
+        document.getElementById('logo').onclick = () => {
+            logoClicks++;
+            if(logoClicks >= 5){
+                const pass = prompt('ادخلي كلمة السر:');
+                if(pass === ADMIN_PASSWORD){
+                    isAdmin = true;
+                    document.getElementById('adminPanel').style.display = 'block';
+                    loadAdminSettings();
+                    renderAdminProducts();
+                    renderAdminOrders();
+                    renderProducts();
+                }else{alert('كلمة السر غلط');}
+                logoClicks = 0;
+            }
+            setTimeout(()=>{logoClicks=0}, 2000);
+        }
+
+        function loadAdminSettings(){
+            document.getElementById('adminDiscountCode').value = settings.discountCode;
+            document.getElementById('adminDiscountPercent').value = settings.discountPercent;
+            document.getElementById('adminDiscountActive').checked = settings.discountActive;
+            document.getElementById('adminFreeShipping').value = settings.freeShipping;
+            document.getElementById('adminShippingActive').checked = settings.shippingActive;
+            document.getElementById('adminGiftMin').value = settings.giftMin;
+            document.getElementById('adminGiftName').value = settings.giftName;
+            document.getElementById('adminGiftActive').checked = settings.giftActive;
+            document.getElementById('adminWalletNumber').value = settings.walletNumber;
+            document.getElementById('adminInstaPay').value = settings.instaPay;
+            document.getElementById('adminWhatsapp').value = settings.whatsappNumber;
+            document.getElementById('adminWhyUs').value = settings.whyUs;
+            document.getElementById('adminOfferTitle').value = settings.offerTitle;
+            document.getElementById('adminOfferDesc').value = settings.offerDesc;
+            document.getElementById('adminOfferHours').value = settings.offerHours;
+        }
+
+        function saveAdminSettings(){
+            settings.discountCode = document.getElementById('adminDiscountCode').value;
+            settings.discountPercent = document.getElementById('adminDiscountPercent').value;
+            settings.discountActive = document.getElementById('adminDiscountActive').checked;
+            settings.freeShipping = document.getElementById('adminFreeShipping').value;
+            settings.shippingActive = document.getElementById('adminShippingActive').checked;
+            settings.giftMin = document.getElementById('adminGiftMin').value;
+            settings.giftName = document.getElementById('adminGiftName').value;
+            settings.giftActive = document.getElementById('adminGiftActive').checked;
+            settings.walletNumber = document.getElementById('adminWalletNumber').value;
+            settings.instaPay = document.getElementById('adminInstaPay').value;
+            settings.whatsappNumber = document.getElementById('adminWhatsapp').value;
+            settings.whyUs = document.getElementById('adminWhyUs').value;
+            settings.offerTitle = document.getElementById('adminOfferTitle').value;
+            settings.offerDesc = document.getElementById('adminOfferDesc').value;
+            settings.offerHours = document.getElementById('adminOfferHours').value;
+            saveSettings();
+            loadSettings();
+            alert('تم حفظ الاعدادات ✅');
+        }
+
+        function closeAdmin(){
+            document.getElementById('adminPanel').style.display = 'none';
+            isAdmin = false;
+            renderProducts();
+        }
+
+        function renderAdminProducts(){
+            const container = document.getElementById('adminProducts');
+            container.innerHTML = products.map(p => `
+                <div class="admin-card">
+                    <img src="${p.img || ''}" style="width:100%;height:100px;object-fit:contain;background:#fff;margin-bottom:8px" onerror="this.style.display='none'">
+                    <strong>${p.name}</strong><br>
+                    السعر: ${p.price} ج<br>
+                    التقييمات: ${p.reviews.length}<br>
+                    <button class="btn btn-edit" onclick="editProduct(${p.id})">تعديل</button>
+                    <button class="btn btn-delete" onclick="deleteProduct(${p.id})">حذف</button>
+                </div>
+            `).join('');
+        }
+
+        function renderAdminOrders(){
+            const container = document.getElementById('adminOrders');
+            if(orders.length === 0){
+                container.innerHTML = '<p style="text-align:center;color:#666">مفيش طلبات لسه</p>';
+                return;
+            }
+            container.innerHTML = orders.map(o => `
+                <div class="admin-card">
+                    <strong>رقم الطلب:</strong> ${o.id}<br>
+                    <strong>العميل:</strong> ${o.name}<br>
+                    <strong>التليفون:</strong> ${o.phone}<br>
+                    <strong>الاجمالي:</strong> ${o.total} ج<br>
+                    <strong>الحالة:</strong>
+                    <select onchange="updateOrderStatus('${o.id}', this.value)">
+                        <option value="قيد التحضير" ${o.status==='قيد التحضير'?'selected':''}>قيد التحضير</option>
+                        <option value="اتشحن" ${o.status==='اتشحن'?'selected':''}>اتشحن</option>
+                        <option value="في الطريق" ${o.status==='في الطريق'?'selected':''}>في الطريق</option>
+                        <option value="اتسلّم" ${o.status==='اتسلّم'?'selected':''}>اتسلّم</option>
+                    </select>
+                    <br><small>${o.date}</small>
+                </div>
+            `).join('');
+        }
+
+        function updateOrderStatus(id, status){
+            let order = orders.find(o => o.id === id);
+            if(order){
+                order.status = status;
+                saveOrders();
+                renderAdminOrders();
+            }
+        }
+
+        function editProduct(id){
+            const p = products.find(prod => prod.id === id);
+            document.getElementById('editId').value = p.id;
+            document.getElementById('editName').value = p.name;
+            document.getElementById('editPrice').value = p.price;
+            document.getElementById('editOldPrice').value = p.oldPrice || '';
+            document.getElementById('editDesc').value = p.desc;
+            document.getElementById('editImg').value = p.img || '';
+            document.getElementById('editImgPreview').src = p.img || '';
+            document.getElementById('editBadge').value = p.badge || '';
+            document.getElementById('editCat').value = p.cat;
+            renderReviewsAdmin(p.reviews);
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function renderReviewsAdmin(reviews){
+            const container = document.getElementById('reviewsAdmin');
+            container.innerHTML = reviews.map((r,idx) => `
+                <div class="review-item-admin">
+                    <strong>${r.name}</strong> - ${'★'.repeat(r.stars)}<br>
+                    ${r.text}<br>
+                    <button class="btn btn-small btn-delete" onclick="deleteReviewFromAdmin(${idx})">حذف التقييم</button>
+                </div>
+            `).join('');
+        }
+
+        function deleteReviewFromAdmin(idx){
+            const id = parseInt(document.getElementById('editId').value);
+            const p = products.find(prod => prod.id === id);
+            p.reviews.splice(idx,1);
+            renderReviewsAdmin(p.reviews);
+        }
+
+        function addReviewToProduct(){
+            const id = parseInt(document.getElementById('editId').value);
+            const p = products.find(prod => prod.id === id);
+            p.reviews.push({name:"عميل جديد",text:"تجربة ممتازة",stars:5});
+            renderReviewsAdmin(p.reviews);
+        }
+
+        function closeEditModal(){document.getElementById('editModal').style.display = 'none';}
+                function handleImageUpload(event){
+            const file = event.target.files[0];
+            if(file){
+                const reader = new FileReader();
+                reader.onload = function(e){
+                    document.getElementById('editImg').value = e.target.result;
+                    document.getElementById('editImgPreview').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveEdit(){
+            const id = parseInt(document.getElementById('editId').value);
+            const p = products.find(prod => prod.id === id);
+            p.name = document.getElementById('editName').value;
+            p.price = parseInt(document.getElementById('editPrice').value);
+            p.oldPrice = parseInt(document.getElementById('editOldPrice').value) || null;
+            p.desc = document.getElementById('editDesc').value;
+            p.img = document.getElementById('editImg').value;
+            p.badge = document.getElementById('editBadge').value;
+            p.cat = document.getElementById('editCat').value;
+            saveProducts();
+            renderAdminProducts();
+            closeEditModal();
+            renderProducts();
+            alert('تم الحفظ ✅');
+        }
+
+        function deleteProduct(id){
+            if(confirm('متأكدة عايزة تمسحي المنتج ده؟')){
+                products = products.filter(p => p.id!== id);
+                saveProducts();
+                renderAdminProducts();
+                renderProducts();
+            }
+        }
+
+        function addNewProduct(){
+            const newId = Math.max(...products.map(p => p.id), 0) + 1;
+            products.push({
+                id: newId,
+                name: "منتج جديد",
+                price: 100,
+                oldPrice: null,
+                cat: "men",
+                img: "",
+                desc: "وصف المنتج",
+                badge: "",
+                reviews: []
+            });
+            saveProducts();
+            renderAdminProducts();
+            renderProducts();
+            editProduct(newId);
+        }
+
+        function openReviewModal(productId){
+            document.getElementById('reviewProductId').value = productId;
+            document.getElementById('reviewName').value = '';
+            document.getElementById('reviewText').value = '';
+            document.getElementById('reviewStars').value = '5';
+            document.querySelectorAll('#starRating i').forEach(star => star.classList.add('active'));
+            document.getElementById('reviewModal').style.display = 'block';
+        }
+
+        function closeReviewModal(){document.getElementById('reviewModal').style.display = 'none';}
+
+        document.querySelectorAll('#starRating i').forEach(star => {
+            star.onclick = function(){
+                const rating = parseInt(this.dataset.star);
+                document.getElementById('reviewStars').value = rating;
+                document.querySelectorAll('#starRating i').forEach((s,idx) => {
+                    s.classList.toggle('active', idx < rating);
+                });
+            }
+        });
+
+        function submitReview(){
+            const productId = parseInt(document.getElementById('reviewProductId').value);
+            const name = document.getElementById('reviewName').value.trim();
+            const text = document.getElementById('reviewText').value.trim();
+            const stars = parseInt(document.getElementById('reviewStars').value);
+            if(!name ||!text){
+                alert('اكتبي اسمك والتقييم');
+                return;
+            }
+            const p = products.find(prod => prod.id === productId);
+            p.reviews.push({name:name,text:text,stars:stars});
+            saveProducts();
+            closeReviewModal();
+            renderProducts();
+            alert('شكراً لتقييمك ✅');
+        }
+
+        function subscribeEmail(){
+            const email = document.getElementById('emailInput').value;
+            if(email){
+                alert('تم الاشتراك بنجاح ✅ هيوصلك العروض على الايميل');
+                document.getElementById('emailInput').value = '';
+            }
+        }
+
+        function startPurchasePopups(){
+            const names = ['احمد','محمد','محمود','عمر','عبدالله','عبدالعزيز','ابراهيم','ياسر','طارق','حسين'];
+            const cities = ['القاهرة','الجيزة','الاسكندرية','الدقهلية','الشرقية','الغربية','المنوفية','القليوبية'];
+            const prods = ['TURBO Fitness Gel','SOTARA GEL','كريم دهن الحية','TREAND Gel','EMLA Cream','MAX EXTEND','Royal Chocolate رجالي'];
+            setInterval(() => {
+                const name = names[Math.floor(Math.random() * names.length)];
+                const city = cities[Math.floor(Math.random() * cities.length)];
+                const prod = prods[Math.floor(Math.random() * prods.length)];
+                const minutes = Math.floor(Math.random() * 15) + 1;
+                const popup = document.getElementById('purchasePopup');
+                popup.innerHTML = `🔥 ${name} من ${city} اشترى ${prod} من ${minutes} دقيقة`;
+                popup.style.display = 'block';
+                setTimeout(() => { popup.style.display = 'none'; }, 4000);
+            }, 18000);
+        }
+
+        let countdownInterval;
+        function startCountdown(){
+            clearInterval(countdownInterval);
+            const hours = parseInt(settings.offerHours) || 48;
+            const endDate = new Date().getTime() + hours*60*60*1000;
+            countdownInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = endDate - now;
+                if(distance <= 0){
+                    document.getElementById('countdown').textContent = 'العرض انتهى';
+                    clearInterval(countdownInterval);
+                    return;
+                }
+                const h = Math.floor(distance / (1000*60*60));
+                const m = Math.floor((distance % (1000*60*60)) / (1000*60));
+                const s = Math.floor((distance % (1000*60)) / 1000);
+                document.getElementById('countdown').textContent = `العرض ينتهي خلال: ${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+            }, 1000);
+        }
+
+        function openTrackModal(){
+            document.getElementById('trackModal').style.display = 'block';
+        }
+        function closeTrackModal(){
+            document.getElementById('trackModal').style.display = 'none';
+        }
+        function trackOrder(){
+            const id = document.getElementById('trackInput').value.trim();
+            const order = orders.find(o => o.id === id);
+            if(!order){
+                document.getElementById('trackResult').innerHTML = '<p style="color:red">رقم الطلب غلط</p>';
+                return;
+            }
+            const steps = ['قيد التحضير','اتشحن','في الطريق','اتسلّم'];
+            let currentIndex = steps.indexOf(order.status);
+            let html = `<div class="order-id-box">رقم الطلب: ${order.id}</div>`;
+            html += '<div class="track-status"><div class="track-line"></div>';
+            steps.forEach((s,i) => {
+                let cls = '';
+                if(i < currentIndex) cls = 'done';
+                if(i === currentIndex) cls = 'active';
+                html += `<div class="track-step ${cls}">
+                    <i class="fa-solid fa-${i===0?'box':i===1?'truck':i===2?'road':'check'}"></i>
+                    <p>${s}</p>
+                </div>`;
+            });
+            html += '</div>';
+            document.getElementById('trackResult').innerHTML = html;
+        }
+
+        async function handleOrderSubmit(e){
+            e.preventDefault();
+
+            const orderId = 'ORD' + Date.now();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+
+            const orderObj = {
+                id: orderId,
+                name: data['الاسم'],
+                phone: data['رقم_الموبايل'],
+                total: data['الاجمالي'],
+                status: 'قيد التحضير',
+                date: new Date().toLocaleString('ar-EG')
+            };
+            orders.push(orderObj);
+            saveOrders();
+
+            if(document.getElementById('adminPanel').style.display === 'block'){
+                renderAdminOrders();
+            }
+
+            document.getElementById('orderIdBox').textContent = orderId;
+            document.getElementById('successPage').style.display = 'flex';
+            document.getElementById('orderPage').style.display = 'none';
+
+            try {
+                await fetch('https://formspree.io/f/mzdoooew', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {'Accept': 'application/json'}
+                });
+
+                e.target.reset();
+                cart = [];
+                saveCart();
+                updateCartUI();
+
+            } catch (error) {
+                alert('حصل خطأ في الإرسال. جربي تاني');
+            }
+        }
+
+        function closeSuccessPage(){
+            document.getElementById('successPage').style.display = 'none';
+        }
+
+        window.onload = function(){
+            generateFakeReviews();
+            loadSettings();
+            renderProducts();
+            updateCartUI();
+            startPurchasePopups();
+        }
+    </script>
+
+    <div id="orderPage">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeOrder()">&times;</span>
+            <div class="order-form">
+                <h2><i class="fa-solid fa-cart-shopping"></i> اتمام الطلب</h2>
+                <form id="checkoutForm" onsubmit="return handleOrderSubmit(event)">
+                    <input type="hidden" name="المنتج" id="formProduct">
+                    <input type="hidden" name="السعر" id="formPrice">
+                    <input type="hidden" name="نوع_الشحن" id="formShippingType">
+                    <input type="hidden" name="مصاريف_الشحن" id="formShipping">
+                    <input type="hidden" name="الاجمالي" id="formTotal">
+                    <input type="hidden" name="كود_الخصم" id="formDiscount">
+                    <input type="hidden" name="طريقة_الدفع" id="formPayment">
+                    <input type="hidden" name="تفاصيل_السلة" id="formCartDetails">
+                    <input type="hidden" name="الهدية_المجانية" id="formGift">
+
+                    <label>الاسم بالكامل *</label>
+                    <input type="text" name="الاسم" required>
+                    <label>العنوان بالتفصيل *</label>
+                    <input type="text" name="العنوان" required>
+                    <label>المحافظة *</label>
+                    <select name="المحافظة" id="gov" required onchange="updateShipping()">
+                        <option value="">اختر المحافظة</option>
+                        <option value="القاهرة">القاهرة</option>
+                        <option value="الجيزة">الجيزة</option>
+                        <option value="الأسكندرية">الأسكندرية</option>
+                        <option value="الدقهلية">الدقهلية</option>
+                        <option value="البحر الأحمر">البحر الأحمر</option>
+                        <option value="البحيرة">البحيرة</option>
+                        <option value="الفيوم">الفيوم</option>
+                        <option value="الغربية">الغربية</option>
+                        <option value="الإسماعيلية">الإسماعيلية</option>
+                        <option value="المنوفية">المنوفية</option>
+                        <option value="المنيا">المنيا</option>
+                        <option value="القليوبية">القليوبية</option>
+                        <option value="الوادي الجديد">الوادي الجديد</option>
+                        <option value="السويس">السويس</option>
+                        <option value="اسوان">اسوان</option>
+                        <option value="اسيوط">اسيوط</option>
+                        <option value="بني سويف">بني سويف</option>
+                        <option value="بورسعيد">بورسعيد</option>
+                        <option value="دمياط">دمياط</option>
+                        <option value="الشرقية">الشرقية</option>
+                        <option value="جنوب سيناء">جنوب سيناء</option>
+                        <option value="كفر الشيخ">كفر الشيخ</option>
+                        <option value="مطروح">مطروح</option>
+                        <option value="الأقصر">الأقصر</option>
+                        <option value="قنا">قنا</option>
+                        <option value="شمال سيناء">شمال سيناء</option>
+                        <option value="سوهاج">سوهاج</option>
+                    </select>
+                    <label>رقم الموبايل *</label>
+                    <input type="tel" name="رقم_الموبايل" required placeholder="01xxxxxxxxx">
+                    <label>رقم موبايل اخر (اختياري)</label>
+                    <input type="tel" name="رقم_موبايل_اخر" placeholder="01xxxxxxxxx">
+                    <label>ملاحظات</label>
+                    <textarea name="ملاحظات" rows="3"></textarea>
+
+                    <div class="discount-box" id="discountBox">
+                        <strong><i class="fa-solid fa-ticket"></i> عندك كود خصم؟</strong>
+                        <div class="discount-input">
+                            <input type="text" id="discountInput" placeholder="اكتب الكود هنا">
+                            <button type="button" class="btn btn-small" onclick="applyDiscount()">تطبيق</button>
+                        </div>
+                        <p id="discountMsg" style="margin-top:8px;font-weight:700;font-size:12px"></p>
+                    </div>
+                    <div class="gift-alert" id="giftAlert"></div>
+                    <div class="gift-alert" id="giftSelectBox" style="display:none">
+                      <strong>اختار هديتك المجانية 🎁</strong>
+                      <select name="الهدية_المجانية" id="giftSelect" onchange="document.getElementById('formGift').value=this.value">
+                        <option value="">اختار</option>
+                        <option value="علبة عسل">علبة عسل</option>
+                        <option value="شوكولاتة رويال">شوكولاتة رويال</option>
+                      </select>
+                    </div>
+
+                    <label>اختر طريقة الدفع *</label>
+                    <div class="shipping-option selected" onclick="selectPayment('cod')">
+                        <input type="radio" name="payment" id="cod" value="cod" checked>
+                        <div class="shipping-title"><i class="fa-solid fa-money-bill"></i> الدفع عند الاستلام</div>
+                    </div>
+                    <div class="shipping-option" onclick="selectPayment('wallet')">
+                        <input type="radio" name="payment" id="wallet" value="wallet">
+                        <div class="shipping-title"><i class="fa-solid fa-wallet"></i> محفظة إلكترونية</div>
+                    </div>
+                    <div class="payment-details" id="walletDetails"></div>
+
+                    <div class="shipping-option" onclick="selectPayment('instapay')">
+                        <input type="radio" name="payment" id="instapay" value="instapay">
+                        <div class="shipping-title"><i class="fa-solid fa-building-columns"></i> انستا باي</div>
+                    </div>
+                    <div class="payment-details" id="instaDetails"></div>
+
+                    <label>اختر نوع الشحن *</label>
+                    <div class="shipping-option" onclick="selectShipping('normal')">
+                        <input type="radio" name="shipping" id="normalShip" value="normal" checked>
+                        <div class="shipping-title">شحن عادي</div>
+                        <div class="shipping-desc">يصل خلال 24 ساعة للقاهرة والجيزة | 2-3 ايام للمحافظات</div>
+                    </div>
+                    <div class="shipping-option" onclick="selectShipping('express')">
+                        <input type="radio" name="shipping" id="expressShip" value="express">
+                        <div class="shipping-title">شحن سريع - مدفوع</div>
+                        <div class="shipping-desc">يصل خلال ساعتين للقاهرة والجيزة 100ج | خلال 24 ساعة للمحافظات 250ج</div>
+                    </div>
+
+                    <div class="total-box">
+                        <div>سعر المنتج: <span id="productPrice">0</span> جنيه</div>
+                        <div id="discountRow" style="display:none">الخصم: -<span id="discountAmount">0</span> جنيه</div>
+                        <div>مصاريف الشحن: <span id="shippingPrice">0</span> جنيه</div>
+                        <hr style="margin:8px 0;border-color:#ddd">
+                        <strong>الاجمالي: <span id="totalPrice">0</span> جنيه</strong>
+                    </div>
+                    <button type="submit" class="btn">تأكيد الطلب</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminPanel" style="display:none;">
+        <div class="modal-content" style="max-width:900px">
+            <span class="close-btn" onclick="closeAdmin()">&times;</span>
+            <div class="admin-panel">
+                <h2><i class="fa-solid fa-gear"></i> لوحة التحكم</h2>
+
+                <div class="admin-card" style="margin-bottom:20px">
+                    <h3>⚙️ الاعدادات العامة</h3>
+                    <label>كود الخصم:</label>
+                    <input type="text" id="adminDiscountCode" value="A307200">
+                    <label>نسبة الخصم %:</label>
+                    <input type="number" id="adminDiscountPercent" value="10">
+                    <label style="display:flex;align-items:center;gap:8px;margin:10px 0">
+                        <input type="checkbox" id="adminDiscountActive" checked style="width:auto">
+                        تفعيل كود الخصم
+                    </label>
+                    <hr style="margin:15px 0">
+                    <label>الحد الادنى للشحن المجاني:</label>
+                    <input type="number" id="adminFreeShipping" value="1000">
+                    <label style="display:flex;align-items:center;gap:8px;margin:10px 0">
+                        <input type="checkbox" id="adminShippingActive" checked style="width:auto">
+                        تفعيل الشحن المجاني
+                    </label>
+                    <hr style="margin:15px 0">
+                    <label>الحد الادنى للهدية المجانية:</label>
+                    <input type="number" id="adminGiftMin" value="1500">
+                    <label>اسم الهدية:</label>
+                    <input type="text" id="adminGiftName" value="علبة فيتامين سي هدية">
+                    <label style="display:flex;align-items:center;gap:8px;margin:10px 0">
+                        <input type="checkbox" id="adminGiftActive" checked style="width:auto">
+                        تفعيل الهدية المجانية
+                    </label>
+                    <hr style="margin:15px 0">
+                    <label>رقم المحفظة الالكترونية:</label>
+                    <input type="text" id="adminWalletNumber" value="01009900599">
+                    <label>رقم انستا باي:</label>
+                    <input type="text" id="adminInstaPay" value="01009900599">
+                    <label>رقم الواتساب:</label>
+                    <input type="text" id="adminWhatsapp" value="01556218451">
+                    <hr style="margin:15px 0">
+                    <label>نص "ليه تشتري مننا" (كل سطر ميزة):</label>
+                    <textarea id="adminWhyUs" rows="5">🚚 شحن سريع خلال 48 ساعة لكل المحافظات
+💯 منتجات اصلية 100% مع شهادة ضمان
+🔄 استرجاع سهل خلال 14 يوم بدون اسئلة
+📞 دعم واتساب فوري من 10 صباحاً لـ 10 مساءً</textarea>
+                    <hr style="margin:15px 0">
+                    <label>عنوان العرض:</label>
+                    <input type="text" id="adminOfferTitle" value="عرض اليوم">
+                    <label>نص العرض:</label>
+                    <input type="text" id="adminOfferDesc" value="باكدج 'ليلة ملكية' - Royal Chocolate + EMLA Cream">
+                    <label>عدد ساعات العرض:</label>
+                    <input type="number" id="adminOfferHours" value="48" min="1" max="168">
+                    <button class="btn" onclick="saveAdminSettings()" style="margin-top:15px">💾 حفظ الاعدادات</button>
+                </div>
+
+                <div class="admin-card" style="margin-bottom:20px">
+                    <h3>📦 إدارة المنتجات</h3>
+                    <button class="btn btn-small" onclick="addNewProduct()">+ اضافة منتج جديد</button>
+                    <div class="admin-grid" id="adminProducts"></div>
+                </div>
+
+                <hr style="margin:20px 0">
+                <h3>📋 إدارة الطلبات</h3>
+                <div id="adminOrders"></div>
+<button class="btn" onclick="downloadFile()" style="margin-top:15px;width:100%;padding:12px;background:#28a745;color:white;border:none;border-radius:6px;font-weight:bold;font-size:16px;cursor:pointer;">
+خروج + تحميل التعديلات
+</button>
+
+<script>
+function downloadFile(){
+    // بياخد كل محتوى الصفحة الحالي
+    let htmlContent = document.documentElement.outerHTML;
+
+    // بيحول المحتوى لملف
+    let blob = new Blob([htmlContent], {type: "text/html"});
+    let url = URL.createObjectURL(blob);
+
+    // بيبدأ التحميل
+    let a = document.createElement("a");
+    a.href = url;
+    a.download = "index.html";
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+</script>
+
+<script>
+function saveAndDownload(){
+    // 1. يرجعك للصفحة الرئيسية
+    window.location.href = "/عبدو/";
+
+    // 2. بعد ثانية يحمل الملف
+    setTimeout(function(){
+        let htmlContent = document.documentElement.outerHTML;
+        let blob = new Blob([htmlContent], {type: "text/html"});
+        let url = URL.createObjectURL(blob);
+
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = "index.html";
+        a.click();
+
+        URL.revokeObjectURL(url);
+    }, 1000);
+}
+</script>
+            </div>
+        </div>
+    </div>
+
+    <div id="editModal">
+        <div class="modal-content" style="max-width:600px">
+            <span class="close-btn" onclick="closeEditModal()">&times;</span>
+            <div class="order-form">
+                <h2><i class="fa-solid fa-pen-to-square"></i> تعديل المنتج</h2>
+                <input type="hidden" id="editId">
+                <label>اسم المنتج</label>
+                <input type="text" id="editName">
+                <label>السعر</label>
+                <input type="number" id="editPrice">
+                <label>السعر القديم</label>
+                <input type="number" id="editOldPrice">
+                <label>الوصف</label>
+                <textarea id="editDesc" rows="3"></textarea>
+                <label>الصورة</label>
+                <input type="text" id="editImg" placeholder="حط رابط الصورة او ارفعها">
+                <input type="file" accept="image/*" onchange="handleImageUpload(event)" class="file-input" id="fileInput">
+                <label for="fileInput" class="file-label">📷 ارفع صورة</label>
+                <img id="editImgPreview" class="img-preview">
+                <label>البادج</label>
+                <input type="text" id="editBadge" placeholder="الاكثر مبيعاً، جديد، خصم">
+                <label>القسم</label>
+                <select id="editCat">
+                    <option value="men">قسم الرجالة</option>
+                    <option value="women">قسم السيدات</option>
+                    <option value="offers">العروض</option>
+                </select>
+                <hr style="margin:15px 0">
+                <h3>التقييمات</h3>
+                <div id="reviewsAdmin"></div>
+                <button type="button" class="btn btn-small" onclick="addReviewToProduct()">+ اضافة تقييم</button>
+                <button class="btn" onclick="saveEdit()" style="margin-top:20px">حفظ التعديل</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="reviewModal">
+        <div class="modal-content" style="max-width:500px">
+            <span class="close-btn" onclick="closeReviewModal()">&times;</span>
+            <div class="order-form">
+                <h2><i class="fa-solid fa-star"></i> اكتب تقييمك</h2>
+                <input type="hidden" id="reviewProductId">
+                <label>اسمك *</label>
+                <input type="text" id="reviewName" required placeholder="محمد - القاهرة">
+                <label>تقييمك *</label>
+                <div class="star-rating" id="starRating">
+                    <i class="fa-solid fa-star" data-star="1"></i>
+                    <i class="fa-solid fa-star" data-star="2"></i>
+                    <i class="fa-solid fa-star" data-star="3"></i>
+                    <i class="fa-solid fa-star" data-star="4"></i>
+                    <i class="fa-solid fa-star" data-star="5"></i>
+                </div>
+                <input type="hidden" id="reviewStars" value="5">
+                <label>تعليقك *</label>
+                <textarea id="reviewText" rows="4" required placeholder="اكتب رأيك في المنتج..."></textarea>
+                <button class="btn" onclick="submitReview()">نشر التقييم</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="trackModal">
+        <div class="modal-content" style="max-width:500px">
+            <span class="close-btn" onclick="closeTrackModal()">&times;</span>
+            <div class="order-form">
+                <h2><i class="fa-solid fa-truck"></i> تتبع طلبك</h2>
+                <label>دخل رقم الطلب</label>
+                <input type="text" id="trackInput" placeholder="مثال: ORD1728881234">
+                <button class="btn" onclick="trackOrder()">تتبع</button>
+                <div id="trackResult" style="margin-top:20px"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="successPage" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#f5f7fa;z-index:2000;align-items:center;justify-content:center;padding:20px;">
+      <div style="background:#fff;padding:40px 30px;border-radius:12px;max-width:420px;width:100%;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.05);">
+        <h1 style="margin:0 0 15px;font-size:32px;font-weight:700;color:#1a1a1a;font-family:'Tajawal',sans-serif;">شكراً!</h1>
+
+        <p style="margin:0 0 10px;font-size:16px;color:#4a5568;line-height:1.6;">
+          تم تأكيد طلبك بنجاح
+        </p>
+
+        <p style="margin:0 0 5px;font-size:14px;color:#718096;">
+          رقم الطلب
+        </p>
+
+        <div id="orderIdBox" style="background:#f7fafc;padding:12px;border-radius:8px;font-family:monospace;font-size:16px;font-weight:700;margin:0 0 20px;color:#1a1a1a;">
+          ORD123456
+        </div>
+
+        <p style="margin:0 0 25px;font-size:15px;color:#4a5568;">
+          تقدر تتابع طلبك وصل لحد فين من زرار "تتبع طلبك" فوق
+        </p>
+
+        <p style="margin:0 0 25px;font-size:16px;color:#000;">
+          نورتنا ♥️
+        </p>
+
+        <button onclick="closeSuccessPage()" style="background:#000;color:#fff;border:none;padding:12px 30px;border-radius:6px;font-size:15px;cursor:pointer;font-family:'Tajawal',sans-serif;">
+          الرجوع للمتجر
+ ... محتوى لوحة التحكم ...
+
+
+    </div>
+
+    <div class="purchase-popup" id="purchasePopup"></div>
+
+    <a href="https://wa.me/201556218451" target="_blank" class="whatsapp-float" id="whatsappBtn">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+<script>
+// دالة التحميل
+function downloadChanges(){
+  document.getElementById('adminPanel').style.display = 'none';
+  setTimeout(() => {
+    let html = document.documentElement.outerHTML;
+    let blob = new Blob([html], {type: 'text/html'});
+    let a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'index.html';
+    a.click();
+  }, 100);
+}
+}
+
+// يشغل الزر لما لوحة التحكم تتفتح
+const oldLoadAdmin = loadAdminSettings;
+loadAdminSettings = function(){
+    oldLoadAdmin();
+    document.getElementById('downloadBtn').style.display = 'block';
+}
+
+// يخفي الزر لما لوحة التحكم تتقفل
+const oldCloseAdmin = closeAdmin;
+closeAdmin = function(){
+    oldCloseAdmin();
+    document.getElementById('downloadBtn').style.display = 'none';
+}
+function downloadChanges() {
+    const content = document.documentElement.outerHTML;
+    const blob = new Blob([content], {type: 'text/html'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'عبده.html';
+    a.click();
+    URL.revokeObjectURL(url);
+
+    // يقفل لوحة التحكم بعد التحميل
+    document.getElementById('adminPanel').style.display = 'none';
+}
+</script>
+</body>
+</html>
